@@ -8,84 +8,73 @@ import java.util.List;
 
 public class PessoaJuridicaRepo {
 
-    private List<PessoaJuridica> listaPessoasJuridicas;
+    private List<PessoaJuridica> registroPessoasJuridicas;
 
     // Construtor
     public PessoaJuridicaRepo() {
-
-        this.listaPessoasJuridicas = new ArrayList<PessoaJuridica>();
+        this.registroPessoasJuridicas = new ArrayList<>();
     }
 
-    // Método para inserir uma pessoa física
-    public void inserir(PessoaJuridica pessoaJuridica) {
-         listaPessoasJuridicas.add(pessoaJuridica);
+    // Método para adicionar uma pessoa jurídica
+    public void adicionar(PessoaJuridica pessoaJuridica) {
+        registroPessoasJuridicas.add(pessoaJuridica);
     }
 
-    // Método para alterar uma pessoa física
-
-    public boolean alterar(PessoaJuridica pessoaJuridica) {
-        for (int i = 0; i < listaPessoasJuridicas.size(); i++) {
-            if (listaPessoasJuridicas.get(i).getId() == pessoaJuridica.getId()) {
-                listaPessoasJuridicas.set(i, pessoaJuridica);
-                return true;  // Retorna true indicando sucesso na alteração
+    // Método para atualizar os dados de uma pessoa jurídica
+    public boolean atualizar(PessoaJuridica pessoaJuridica) {
+        for (int i = 0; i < registroPessoasJuridicas.size(); i++) {
+            if (registroPessoasJuridicas.get(i).getId().equals(pessoaJuridica.getId())) {
+                registroPessoasJuridicas.set(i, pessoaJuridica);
+                return true;  // Retorna true para indicar que a atualização foi bem-sucedida
             }
         }
-
-        return false;  // Retorna false se a pessoa não foi encontrada na lista
+        return false;  // Retorna false se a pessoa jurídica não foi encontrada
     }
 
-    // Método para excluir uma pessoa física por ID
-    public boolean excluir(int id) {
-        for (PessoaJuridica p: listaPessoasJuridicas) {
-            if(p.getId()==id){
-                listaPessoasJuridicas.remove(p);
-                return true;
-            }
-        }
-        return false;  // Retorna false se a pessoa física não foi encontrada na lista
+    // Método para remover uma pessoa jurídica pelo ID
+    public boolean remover(int id) {
+        return registroPessoasJuridicas.removeIf(pessoaJuridica -> pessoaJuridica.getId() == id);
     }
 
-    public PessoaJuridica obter(int id) {
-        return listaPessoasJuridicas.stream()
+    // Método para buscar uma pessoa jurídica pelo ID
+    public PessoaJuridica buscarPorId(int id) {
+        return registroPessoasJuridicas.stream()
                 .filter(pessoaJuridica -> pessoaJuridica.getId() == id)
                 .findFirst()
                 .orElse(null);
     }
 
-    // Método para obter todas as pessoas físicas
-    public ArrayList<PessoaJuridica> obterTodos_1() {
-        return new ArrayList<>(listaPessoasJuridicas);
+    // Método para obter todas as pessoas jurídicas
+    public List<PessoaJuridica> listarTodas() {
+        return new ArrayList<>(registroPessoasJuridicas);
     }
 
-    public List<PessoaJuridica> obterTodos() {
-        return listaPessoasJuridicas;
-    }
-    public void persistir(String nomeArquivo) {
-        if(listaPessoasJuridicas.isEmpty()){
-            System.out.println("Não existem registros a serem persistidos");
+    // Método para salvar os dados em um arquivo
+    public void salvarDados(String nomeArquivo) {
+        if (registroPessoasJuridicas.isEmpty()) {
+            System.out.println("Nenhum dado disponível para salvar.");
             return;
         }
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(nomeArquivo))) {
-            out.writeObject(listaPessoasJuridicas);
+            out.writeObject(registroPessoasJuridicas);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-
-    public void recuperar(String nomeArquivo) {
+    // Método para carregar os dados de um arquivo
+    public void carregarDados(String nomeArquivo) {
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(nomeArquivo))) {
-            listaPessoasJuridicas = (ArrayList<PessoaJuridica>) in.readObject();
-
-
+            registroPessoasJuridicas = (ArrayList<PessoaJuridica>) in.readObject();
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
 
-    public void ListarTodas(){
-        for (PessoaJuridica pf: listaPessoasJuridicas) {
-            System.out.println(pf.exibir());
+    // Método para exibir todas as pessoas jurídicas
+    public void exibirTodas() {
+        for (PessoaJuridica pessoaJuridica : registroPessoasJuridicas) {
+            System.out.println(pessoaJuridica.exibir());
         }
     }
 }

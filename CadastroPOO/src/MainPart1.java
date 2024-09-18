@@ -6,66 +6,53 @@ import model.PessoaJuridicaRepo;
 public class MainPart1 {
     public static void main(String[] args) {
 
+        // 1 - Inicializando o repositório para pessoas físicas (pfRepo).
+        PessoaFisicaRepo pfRepo = new PessoaFisicaRepo();
 
-        // a - Instanciar um repositório de pessoas físicas (repo1).
-        PessoaFisicaRepo repo1= new PessoaFisicaRepo();
-
-        // b - Adicionar duas pessoas físicas, utilizando o construtor
-        //completo.
-
-        repo1.inserir(new PessoaFisica("Matheus",25,"1222611")) ;
-        repo1.inserir(new PessoaFisica("Marcia",22,"1223211")) ;
-        repo1.inserir(new PessoaFisica("Carlos",19,"122222")) ;
+        // 2 - Inserindo três registros de pessoas físicas usando o construtor completo.
+        pfRepo.inserir(new PessoaFisica("João", 30, "9812345"));
+        pfRepo.inserir(new PessoaFisica("Ana", 28, "9923456"));
+        pfRepo.inserir(new PessoaFisica("Pedro", 21, "9786543"));
 
         System.out.println("");
         System.out.println("");
 
-        // c -Invocar o método de persistência em repo1, fornecendo
-        //um nome de arquivo fixo, através do código.
+        // 3 - Gravando as informações de pfRepo em um arquivo chamado "pessoasFisicasData".
+        pfRepo.persistir("pessoasFisicasData");
 
-        repo1.persistir("listaPessoafisica");
+        System.out.println("Informações de Pessoas Físicas foram salvas com sucesso.");
 
-        System.out.println("Dados Pessoa Fisica Aramzenados");
+        // 4 - Criando um novo repositório para pessoas físicas (pfRepo2).
+        PessoaFisicaRepo pfRepo2 = new PessoaFisicaRepo();
 
-        //d - Instanciar outro repositório de pessoas físicas (repo2).
-        PessoaFisicaRepo repo2= new PessoaFisicaRepo();
+        // 5 - Recuperando os dados salvos no arquivo e carregando em pfRepo2.
+        pfRepo2.recuperar("pessoasFisicasData");
 
-        // e- Invocar o método de recuperação em repo2, fornecendo o
-        //mesmo nome de arquivo utilizado anteriormente.
-
-        repo2.recuperar("listaPessoafisica");
-
-        // f- Exibir os dados de todas as pessoas físicas recuperadas.
-        System.out.println("Listar Pessoas Fisicas Recuperadas");
-        repo2.ListarTodas();
+        // 6 - Exibindo todas as pessoas físicas recuperadas do arquivo.
+        System.out.println("Pessoas Físicas recuperadas do arquivo:");
+        pfRepo2.ListarTodas();
 
 
-        // g - Instanciar um repositório de pessoas jurídicas (repo3).
-        PessoaJuridicaRepo repo3= new PessoaJuridicaRepo();
+        // 7 - Inicializando o repositório para pessoas jurídicas (pjRepo).
+        PessoaJuridicaRepo pjRepo = new PessoaJuridicaRepo();
 
-        // h- Adicionar duas pessoas jurídicas, utilizando o construtor
-        //completo.
-        repo3.inserir(new PessoaJuridica("BB1","1222611")) ;
-        repo3.inserir(new PessoaJuridica("M.LUIZA","1223211")) ;
-        repo3.inserir(new PessoaJuridica("LOJAS S/A","122222")) ;
+        // 8 - Inserindo três registros de pessoas jurídicas com o construtor completo.
+        pjRepo.inserir(new PessoaJuridica("Empresa X", "35487612"));
+        pjRepo.inserir(new PessoaJuridica("Loja Y", "85412389"));
+        pjRepo.inserir(new PessoaJuridica("Serviços Z", "45321987"));
 
-        // i - Invocar o método de persistência em repo3, fornecendo
-        //um nome de arquivo fixo, através do código.
-        System.out.println("Dados Pessoa Juridicas Aramzenados");
-        repo3.persistir("listaPessoaJuridica");
+        // 9 - Salvando as informações de pjRepo em um arquivo chamado "pessoasJuridicasData".
+        System.out.println("Dados de Pessoas Jurídicas foram salvos.");
+        pjRepo.persistir("pessoasJuridicasData");
 
-        // j - Instanciar outro repositório de pessoas jurídicas (repo4).
-        PessoaJuridicaRepo repo4= new PessoaJuridicaRepo();
+        // 10 - Criando outro repositório para pessoas jurídicas (pjRepo2).
+        PessoaJuridicaRepo pjRepo2 = new PessoaJuridicaRepo();
 
-        // k - Invocar o método de recuperação em repo4, fornecendo o
-        //mesmo nome de arquivo utilizado anteriormente.
-        repo4.recuperar("listaPessoaJuridica");
+        // 11 - Recuperando os dados do arquivo salvo anteriormente para pjRepo2.
+        pjRepo2.recuperar("pessoasJuridicasData");
 
-        // l - Exibir os dados de todas as pessoas jurídicas
-        //recuperadas.
-        System.out.println("Dados Pessoa Juridicas Recuperados");
-        repo4.ListarTodas();
-
-
+        // 12 - Exibindo todas as pessoas jurídicas recuperadas do arquivo.
+        System.out.println("Pessoas Jurídicas recuperadas do arquivo:");
+        pjRepo2.ListarTodas();
     }
 }

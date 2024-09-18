@@ -2,40 +2,42 @@ package entidades;
 
 import java.io.Serializable;
 
-import utils.IDControle;
-
 public class PessoaJuridica extends Pessoa implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private String cnpj;
+    private String numeroCnpj;
 
     public PessoaJuridica() {
+        // Construtor vazio
+    }
 
+    public PessoaJuridica(String numeroCnpj) {
+        this.numeroCnpj = numeroCnpj;
     }
-    public PessoaJuridica(String cnpj) {
-        this.cnpj = cnpj;
+
+    public PessoaJuridica(String nomeEmpresa, String numeroCnpj) {
+        super(nomeEmpresa);
+        this.numeroCnpj = numeroCnpj;
     }
-    public PessoaJuridica(String nome, String cnpj) {
-        super(nome);
-        this.cnpj = cnpj;
+
+    public PessoaJuridica(Integer identificador, String nomeEmpresa, String numeroCnpj) {
+        super(nomeEmpresa);
+        this.numeroCnpj = numeroCnpj;
     }
-    public PessoaJuridica(Integer id, String nome, String cnpj) {
-        super(nome);
-        this.cnpj = cnpj;
+
+    public String getNumeroCnpj() {
+        return numeroCnpj;
     }
-    public String getCnpj() {
-        return cnpj;
+
+    public void setNumeroCnpj(String numeroCnpj) {
+        this.numeroCnpj = numeroCnpj;
     }
-    public void setCnpj(String cnpj) {
-        this.cnpj = cnpj;
-    }
+
     @Override
     public String exibir() {
         return
-                "id : " + getId() + "\n" +
-                        "empresa : " + getNome() + "\n" +
-                        "cnpj : '" + getCnpj() + "\n";
-
+                "ID: " + getId() + "\n" +
+                "Empresa: " + getNome() + "\n" +
+                "CNPJ: " + getNumeroCnpj() + "\n";
     }
-
 }

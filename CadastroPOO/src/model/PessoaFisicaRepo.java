@@ -7,92 +7,74 @@ import java.util.*;
 
 public class PessoaFisicaRepo {
 
-    private List<PessoaFisica> listaPessoasFisicas;
+    private List<PessoaFisica> registroPessoasFisicas;
 
     // Construtor
     public PessoaFisicaRepo() {
-
-        this.listaPessoasFisicas = new ArrayList<>();
+        this.registroPessoasFisicas = new ArrayList<>();
     }
 
-    // Método para inserir uma pessoa física
-    public void inserir(PessoaFisica pessoaFisica) {
-
-        listaPessoasFisicas.add(pessoaFisica);
+    // Método para adicionar uma nova pessoa física
+    public void adicionar(PessoaFisica pessoaFisica) {
+        registroPessoasFisicas.add(pessoaFisica);
     }
 
-    // Método para alterar uma pessoa física
-
-    public boolean alterar(PessoaFisica pessoaFisica) {
-        for (int i = 0; i < listaPessoasFisicas.size(); i++) {
-            if (listaPessoasFisicas.get(i).getId() == pessoaFisica.getId()) {
-                listaPessoasFisicas.set(i, pessoaFisica);
-                return true;  // Retorna true indicando sucesso na alteração
+    // Método para atualizar os dados de uma pessoa física existente
+    public boolean atualizar(PessoaFisica pessoaFisica) {
+        for (int i = 0; i < registroPessoasFisicas.size(); i++) {
+            if (registroPessoasFisicas.get(i).getId().equals(pessoaFisica.getId())) {
+                registroPessoasFisicas.set(i, pessoaFisica);
+                return true;  // Retorna true para indicar que a atualização foi bem-sucedida
             }
         }
-
-        return false;  // Retorna false se a pessoa física não foi encontrada na lista
+        return false;  // Retorna false se a pessoa física não foi encontrada
     }
 
-
-
-    // Método para excluir uma pessoa física por ID
-
-
-    public boolean excluir(int id) {
-        for (PessoaFisica p:listaPessoasFisicas) {
-            if(p.getId()==id){
-                listaPessoasFisicas.remove(p);
-                return true;
-            }
-        }
-        return false;  // Retorna false se a pessoa física não foi encontrada na lista
+    // Método para remover uma pessoa física pelo ID
+    public boolean remover(int id) {
+        return registroPessoasFisicas.removeIf(pessoaFisica -> pessoaFisica.getId() == id);
     }
 
-
-    public PessoaFisica obter(int id) {
-        return listaPessoasFisicas.stream()
+    // Método para buscar uma pessoa física pelo ID
+    public PessoaFisica buscarPorId(int id) {
+        return registroPessoasFisicas.stream()
                 .filter(pessoaFisica -> pessoaFisica.getId() == id)
                 .findFirst()
                 .orElse(null);
     }
 
-    // Método para obter todas as pessoas físicas
-
-    public List<PessoaFisica> obterTodos() {
-        return listaPessoasFisicas ;
+    // Método para obter todas as pessoas físicas registradas
+    public List<PessoaFisica> listarTodas() {
+        return registroPessoasFisicas;
     }
-    public void persistir(String nomeArquivo) {
 
-        if(listaPessoasFisicas.isEmpty()){
-            System.out.println("Não existem registros a serem persistidos");
+    // Método para salvar os dados em um arquivo
+    public void salvarDados(String nomeArquivo) {
+        if (registroPessoasFisicas.isEmpty()) {
+            System.out.println("Nenhum dado disponível para salvar.");
             return;
         }
 
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(nomeArquivo))) {
-            out.writeObject(listaPessoasFisicas);
+            out.writeObject(registroPessoasFisicas);
         } catch (IOException e) {
             e.printStackTrace();
-         }
+        }
     }
 
-
-    public void recuperar(String nomeArquivo) {
+    // Método para carregar os dados de um arquivo
+    public void carregarDados(String nomeArquivo) {
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(nomeArquivo))) {
-            listaPessoasFisicas = (ArrayList<PessoaFisica>) in.readObject();
-
-
+            registroPessoasFisicas = (ArrayList<PessoaFisica>) in.readObject();
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
 
-    public void ListarTodas(){
-        for (PessoaFisica pf: listaPessoasFisicas) {
-            System.out.println(pf.exibir());
+    // Método para exibir todas as pessoas físicas
+    public void exibirTodas() {
+        for (PessoaFisica pessoaFisica : registroPessoasFisicas) {
+            System.out.println(pessoaFisica.exibir());
         }
-
     }
-
-
 }

@@ -1,120 +1,96 @@
 import services.Acoes;
-
 import java.util.Scanner;
-
 
 public class MainPart2 {
 
-    static Scanner scanner = new Scanner(System.in);
-    static String opcaoPessoa = "";
-    static String opcaoAcao = "";
+    static Scanner input = new Scanner(System.in);
+    static String tipoPessoa = "";
+    static String acaoEscolhida = "";
 
     public static void main(String[] args) {
         while (true) {
-            menuAcoes();
-            menuPessoa();
-            executarAcao();
+            mostrarMenuAcoes();
+            selecionarTipoPessoa();
+            processarAcao();
         }
-
     }
 
-    private static void executarAcao() {
-        Acoes acoes = new Acoes(opcaoPessoa,opcaoAcao);
+    private static void processarAcao() {
+        Acoes acoes = new Acoes(tipoPessoa, acaoEscolhida);
         acoes.executandoAcoes();
     }
 
-    private static void menuPessoa() {
-        System.out.println("F - Pessoa Fisica | J - Pessoa Juridica  ");
+    private static void selecionarTipoPessoa() {
+        System.out.println("Digite F para Pessoa Física ou J para Pessoa Jurídica:");
 
         while (true) {
-            String pessoa = scanner.next();
-            if (pessoa.contains("f") || pessoa.contains("F") || pessoa.contains("j") || pessoa.contains("J")) {
-                if (pessoa.contains("f") || pessoa.contains("F")) {
-                    //dados = new PessoaFisica();
-                    opcaoPessoa = "f";
+            String escolhaPessoa = input.next();
+            if (escolhaPessoa.equalsIgnoreCase("f") || escolhaPessoa.equalsIgnoreCase("j")) {
+                if (escolhaPessoa.equalsIgnoreCase("f")) {
+                    tipoPessoa = "f";  // Pessoa Física selecionada
                 } else {
-                    //dados = new PessoaJuridica();
-                    opcaoPessoa = "j";
+                    tipoPessoa = "j";  // Pessoa Jurídica selecionada
                 }
                 break;
             } else {
-                System.out.println("Pessoa deve ser (F)isica ou (J)uridica");
+                System.out.println("Opção inválida! Escolha F para Física ou J para Jurídica.");
             }
         }
-
-
     }
 
-    private static void menuAcoes() {
+    private static void mostrarMenuAcoes() {
         while (true) {
             System.out.println("");
-            System.out.println("");
             System.out.println("==========================================");
-            System.out.println("1 - Incluir Pessoa");
-            System.out.println("2 - Alterar Pessoa");
-            System.out.println("3 - Excluir Pessoa");
-            System.out.println("4 - Buscar pelo Id");
-            System.out.println("5 - Exibir todos");
-            System.out.println("6 - Persistir Dados");
-            System.out.println("7 - Recuperar Dados");
-            System.out.println("0 - Finalizar Programa");
+            System.out.println("1 - Adicionar nova pessoa");
+            System.out.println("2 - Editar informações de pessoa");
+            System.out.println("3 - Remover uma pessoa");
+            System.out.println("4 - Buscar pessoa por ID");
+            System.out.println("5 - Mostrar todas as pessoas");
+            System.out.println("6 - Salvar dados");
+            System.out.println("7 - Restaurar dados");
+            System.out.println("0 - Sair do programa");
             System.out.println("==========================================");
-            System.out.print("opção : ");
-            int escolha = -1;
+            System.out.print("Escolha uma opção: ");
+            
+            int opcaoMenu = -1;
             try {
-                escolha = scanner.nextInt();
-
+                opcaoMenu = input.nextInt();
             } catch (RuntimeException e) {
-                escolha = -1;
-                scanner.nextLine();  // Limpa o buffer de entrada
+                opcaoMenu = -1;
+                input.nextLine();  // Limpa o buffer de entrada
             }
 
-            switch (escolha) {
+            switch (opcaoMenu) {
                 case 1:
-                    opcaoAcao = "I";
-                    //Incluir;
+                    acaoEscolhida = "I";  // Incluir nova pessoa
                     return;
                 case 2:
-                    opcaoAcao = "A";
-                    //Alterar
+                    acaoEscolhida = "A";  // Alterar dados
                     return;
                 case 3:
-                    opcaoAcao = "R";
-                    //excluir (Remove);
+                    acaoEscolhida = "R";  // Remover
                     return;
                 case 4:
-                    opcaoAcao = "B";
-                    //buscarPeloId
+                    acaoEscolhida = "B";  // Buscar por ID
                     return;
                 case 5:
-                    opcaoAcao = "S";
-                    //exibirTodos (Show all)
+                    acaoEscolhida = "S";  // Mostrar todos os registros
                     return;
                 case 6:
-                    opcaoAcao = "P";
-                    //persistirDados
+                    acaoEscolhida = "P";  // Salvar os dados
                     return;
                 case 7:
-                    opcaoAcao = "G";
-                    //recuperarDados(Get)
+                    acaoEscolhida = "G";  // Restaurar dados
                     return;
                 case 0:
-                    opcaoAcao = "E";
-                    //sair(Exit)
-                    System.out.println("Encerrar processo ...");
-                    scanner.close();
+                    acaoEscolhida = "E";  // Encerrar o programa
+                    System.out.println("Encerrando o programa...");
+                    input.close();
                     System.exit(0);
-
                 default:
-                    System.out.println("Escolha inválida. Tente novamente.");
-
+                    System.out.println("Opção inválida, tente novamente.");
             }
-
         }
     }
-
-
-
-
-
 }

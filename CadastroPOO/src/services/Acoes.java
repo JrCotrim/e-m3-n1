@@ -6,7 +6,6 @@ import dao.Dao;
 import entidades.Pessoa;
 import entidades.PessoaFisica;
 import entidades.PessoaJuridica;
-
 import utils.Util;
 
 public class Acoes {
@@ -15,14 +14,15 @@ public class Acoes {
     private Scanner scanner = new Scanner(System.in);
     private String opcaoPessoa;
     private String opcaoAcao;
-    private String prefixo="";
-    static Integer idBusca = 0;
+    private String prefixo = "";
+    private static Integer idBusca = 0;
     private Util utl;
     private Dao dao;
     private String nome = "";
     private String cpf = "";
     private String cnpj = "";
     private Integer idade = 0;
+
     public Acoes(String opcaoPessoa, String opcaoAcao) {
         this.opcaoPessoa = opcaoPessoa;
         this.opcaoAcao = opcaoAcao;
@@ -30,42 +30,32 @@ public class Acoes {
         this.dao = new Dao(opcaoPessoa);
     }
 
-
-    public void executandoAcoes() {
-        String tpPessoa = (opcaoPessoa == "f") ? "Pessoa fisica" : "Pessoa juridica";
+    public void executarAcoes() {
+        String tpPessoa = opcaoPessoa.equals("f") ? "Pessoa Física" : "Pessoa Jurídica";
         switch (opcaoAcao) {
             case "I":
                 novo();
                 break;
             case "A":
-                System.out.println("");
                 editar();
                 break;
             case "R":
                 excluir();
                 break;
             case "B":
-                System.out.println("buscar dados by id " + tpPessoa);
                 mostrarItemPorId();
                 break;
             case "S":
-                System.out.println("exibir todos dados " + tpPessoa);
                 mostrarTodos();
                 break;
             case "P":
-                System.out.println("persisitir dados " + tpPessoa);
-                System.out.println("");
                 persistirDadosBinarios();
                 break;
             case "G":
-                //recuperarDados(Get)
-                System.out.println("recuperar dados " + tpPessoa);
-                System.out.println("");
                 recuperarDadosBinarios();
                 break;
             case "E":
-                //sair(exit)
-                System.out.println("sair !");
+                System.out.println("Saindo...");
                 scanner.close();
                 System.exit(0);
                 break;
@@ -74,63 +64,71 @@ public class Acoes {
                 utl.clickMe();
         }
     }
+
     private void mostrarItemPorId() {
         obterId();
-        obtemDadosById();
+        if (obterDadosPorId()) {
+            System.out.println("Dados encontrados:");
+            exibirDadosPessoa();
+        } else {
+            System.out.println("Pessoa não encontrada.");
+        }
     }
+
     private void editar() {
         obterId();
-        alterarDados();
+        if (obterDadosPorId()) {
+            System.out.println("Caso deseje manter o valor original, tecle [enter] para seguir ao próximo item");
+            preencheDadosPessoa();
+            edicaoListasPessoa();
+        } else {
+            System.out.println("Pessoa não encontrada para edição.");
+        }
     }
+
     private void novo() {
         preencheDadosPessoa();
         insercaoListasPessoa();
     }
+
     private void excluir() {
         obterId();
-        obtemDadosById();
-
-        boolean inloop=true;
-
-
-        while(inloop){
-            System.out.println("Confirma a exclusão do item (S/N) ?");
+        if (obterDadosPorId()) {
+            System.out.println("Confirma a exclusão do item (S/N)?");
             String resp = scanner.nextLine();
-
-            if(resp.equals("N")||resp.equals("n")){
-                return;
-            }else if(resp.equals("s")||resp.equals("S")){
-                inloop=false;
-                dao.exluir(idBusca);
-                System.out.println("excluindo dados " + ((opcaoPessoa=="f") ? "Pessoa Fisica": "Pessoa Juridica"));
+            if (resp.equalsIgnoreCase("S")) {
+                dao.excluir(idBusca);
+                System.out.println("Dados excluídos com sucesso.");
+            } else {
+                System.out.println("Exclusão cancelada.");
             }
+        } else {
+            System.out.println("Pessoa não encontrada para exclusão.");
         }
+    }
 
-     }
     private void mostrarTodos() {
-        dao.obterTodos();
-        utl.clickMe();
+        dao.obterTodos().forEach(System.out::println);
     }
-    private void recuperarDadosBinarios() {
-        prefixo = utl.inputDadosText("Digite o prefixo do arquivo",
-                                        "o prefixo precisa ser preenchido",
-                                                "");
-        dao.recuperar(prefixo);
-        utl.clickMe();
-    }
-    private void persistirDadosBinarios() {
-          prefixo = utl.inputDadosText("Digite o prefixo do arquivo",
-                                       "o prefixo precisa ser preenchido","");
-          dao.persistir(prefixo);
 
+    private void recuperarDadosBinarios() {
+        prefixo = utl.inputDadosText("Digite o prefixo do arquivo", "O prefixo precisa ser preenchido", "");
+        dao.recuperar(prefixo);
     }
+
+    private void persistirDadosBinarios() {
+        prefixo = utl.inputDadosText("Digite o prefixo do arquivo", "O prefixo precisa ser preenchido", "");
+        dao.persistir(prefixo);
+    }
+
     private void insercaoListasPessoa() {
         if (opcaoPessoa.equals("f")) {
-            dao.inserirDados(pessoaFisica);
+            dao.inserir(pessoaFisica);
         } else {
-            dao.inserirDados(pessoaJuridica);
+            dao.inserir(pessoaJuridica);
         }
     }
+
     private void edicaoListasPessoa() {
         if (opcaoPessoa.equals("f")) {
             dao.alterar(pessoaFisica);
@@ -138,133 +136,57 @@ public class Acoes {
             dao.alterar(pessoaJuridica);
         }
     }
+
     private void preencheDadosPessoa() {
-        String nomeNovo = "";
-        String cpfNovo = "";
-        String cnpjNovo = "";
-        Integer idadeNovo = 0;
-
-        // nome
-        if (opcaoAcao.equals("A")) {
-            scanner.nextLine();
-        }
-
-        nomeNovo = utl.inputDadosText("Digite o nome",
-                           "nome precisa ser preenchido",nome);
+        String nomeNovo = utl.inputDadosText("Digite o nome", "Nome precisa ser preenchido", nome);
 
         if (opcaoPessoa.equals("f")) {
-            // idade
-            idadeNovo= utl.inputDadosNum("Digite o idade",
-                                  "insira a idade entre 18 e 99 anos"
-                                 ,idade);
-            // cpf
-            cpfNovo = utl.inputDadosText("Digite o cpf",
-                                       "o cpf precisa ser definido",
-                                    cpf );
-
-            utl.clickMe();
-
-            concluiEntradaDeDadosPessoa(cpfNovo,nomeNovo,idadeNovo);
-
-
+            idade = utl.inputDadosNum("Digite a idade", "Idade deve estar entre 18 e 99 anos", idade);
+            cpf = utl.inputDadosText("Digite o CPF", "CPF precisa ser definido", cpf);
+            pessoaFisica = new PessoaFisica(nomeNovo, idade, cpf);
         } else {
-            // cnpj
-            cnpjNovo= utl.inputDadosText("Digite o cnpj",
-                                       "o cnpj precisa ser definido",
-                                    cnpj);
-
-            utl.clickMe();
-
-            concluiEntradaDeDadosPessoa(cnpjNovo,nomeNovo);
-
-        }
-
-    }
-    private void concluiEntradaDeDadosPessoa(String cnpj, String nome) {
-        if (opcaoAcao.equals("A")) {
-            pessoaJuridica.setCnpj(cnpj);
-            pessoaJuridica.setNome(nome);
-        }else {
-            atualizarInstancia(new PessoaJuridica(nome, cnpj));
+            cnpj = utl.inputDadosText("Digite o CNPJ", "CNPJ precisa ser definido", cnpj);
+            pessoaJuridica = new PessoaJuridica(nomeNovo, cnpj);
         }
     }
-    private void concluiEntradaDeDadosPessoa(String cpf, String nome, Integer idade) {
 
-        if (opcaoAcao.equals("A")) {
-            pessoaFisica.setCpf(cpf);
-            pessoaFisica.setNome(nome);
-            pessoaFisica.setIdade(idade);
-        }else{
-            atualizarInstancia(new PessoaFisica(nome, idade, cpf));
-        }
-    }
-     private void atualizarInstancia(Pessoa cls) {
-        if (opcaoPessoa == "f") {
-            pessoaFisica = (PessoaFisica) cls;
-
+    private void exibirDadosPessoa() {
+        if (opcaoPessoa.equals("f")) {
+            System.out.println(pessoaFisica.exibir());
         } else {
-            pessoaJuridica = (PessoaJuridica) cls;
-
+            System.out.println(pessoaJuridica.exibir());
         }
     }
+
+    private boolean obterDadosPorId() {
+        Pessoa pessoa = dao.obter(idBusca);
+        if (pessoa != null) {
+            if (pessoa instanceof PessoaFisica) {
+                pessoaFisica = (PessoaFisica) pessoa;
+                nome = pessoaFisica.getNome();
+                cpf = pessoaFisica.getCpf();
+                idade = pessoaFisica.getIdade();
+            } else if (pessoa instanceof PessoaJuridica) {
+                pessoaJuridica = (PessoaJuridica) pessoa;
+                nome = pessoaJuridica.getNome();
+                cnpj = pessoaJuridica.getCnpj();
+            }
+            return true;
+        }
+        return false;
+    }
+
     private void obterId() {
-        //somente valido para alteraçao/exclusão/busca
         while (true) {
             try {
-                System.out.println("Digite o id");
+                System.out.println("Digite o ID");
                 idBusca = scanner.nextInt();
                 scanner.nextLine();
                 return;
             } catch (RuntimeException e) {
-                System.out.println("Id inválido,valor deve ser numerico. Tente novamente");
+                System.out.println("ID inválido, valor deve ser numérico. Tente novamente.");
                 utl.clickMe();
             }
         }
     }
-    private void alterarDados() {
-
-        if (obtemDadosById()) {
-            System.out.println("=============================================================================");
-            System.out.println("Caso deseja manter o valor original, tecle [enter] para seguir o proximo item");
-            System.out.println("=============================================================================");
-            utl.clickMe();
-            preencheDadosPessoa();
-            edicaoListasPessoa();
-        }
-
-    }
-    private boolean obtemDadosById() {
-
-        boolean pessoaValida;
-        Integer id=idBusca;
-
-        if (opcaoPessoa == "f") {
-            pessoaFisica = (PessoaFisica) dao.obterPessoa(id);
-            pessoaValida = utl.verificarInstancia(pessoaFisica);
-        } else {
-            pessoaJuridica = (PessoaJuridica) dao.obterPessoa(id);
-            pessoaValida = utl.verificarInstancia(pessoaJuridica);
-        }
-
-        if (pessoaValida) {
-            if(opcaoPessoa == "f"){
-              nome =pessoaFisica.getNome();
-              cpf =pessoaFisica.getCpf();
-              idade =pessoaFisica.getIdade();
-            }else{
-                nome =pessoaJuridica.getNome();
-                cnpj =pessoaJuridica.getCnpj();
-            }
-            return true;
-        } else {
-            nome="";
-            idade=0;
-            cpf="";
-            cnpj="";
-            return false;
-        }
-
-
-    }
-
 }

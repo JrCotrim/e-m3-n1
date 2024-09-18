@@ -5,43 +5,46 @@ import java.io.Serializable;
 public class PessoaFisica extends Pessoa implements Serializable {
     private static final long serialVersionUID = 1L;
 
-     private Integer idade;
-    private String cpf;
+    private Integer idadePessoa;
+    private String documentoCpf;
+
     public PessoaFisica() {
-     }
-    public PessoaFisica(Integer idade, String cpf) {
-        this.idade = idade;
-        this.cpf = cpf;
+        // Construtor padrão sem parâmetros
     }
 
-    public PessoaFisica( String nome, Integer idade, String cpf) {
-        super(  nome);
-        this.idade = idade;
-        this.cpf = cpf;
-
-    }
-    public Integer getIdade() {
-        return idade;
+    public PessoaFisica(Integer idadePessoa, String documentoCpf) {
+        this.idadePessoa = idadePessoa;
+        this.documentoCpf = documentoCpf;
     }
 
-    public void setIdade(Integer idade) {
-        this.idade = idade;
+    public PessoaFisica(String nomePessoa, Integer idadePessoa, String documentoCpf) {
+        super(nomePessoa);  // Chama o construtor da classe Pai (Pessoa)
+        this.idadePessoa = idadePessoa;
+        this.documentoCpf = documentoCpf;
     }
 
-    public String getCpf() {
-        return cpf;
+    public Integer getIdadePessoa() {
+        return idadePessoa;
     }
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
+
+    public void setIdadePessoa(Integer idadePessoa) {
+        this.idadePessoa = idadePessoa;
+    }
+
+    public String getDocumentoCpf() {
+        return documentoCpf;
+    }
+
+    public void setDocumentoCpf(String documentoCpf) {
+        this.documentoCpf = documentoCpf;
     }
 
     @Override
     public String exibir() {
         return
-                "id : " + getId() + "\n" +
-                "nome : " + getNome()  + "\n" +
-                "idade : " + idade  + "\n" +
-                "cpf : '" + cpf  + "\n" ;
+                "ID: " + getId() + "\n" +
+                "Nome: " + getNome() + "\n" +
+                "Idade: " + idadePessoa + "\n" +
+                "CPF: '" + documentoCpf + "\n";
     }
-
 }
