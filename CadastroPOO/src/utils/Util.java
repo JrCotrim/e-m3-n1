@@ -17,7 +17,6 @@ public class Util {
 
     }
 
-    // validação idade
     public  boolean campoIdadeValida(String valor, String msg) {
         try {
             Integer idade = Integer.parseInt(valor);
@@ -36,7 +35,6 @@ public class Util {
         return true;
     }
 
-    // validação nome
     public  boolean campoValido(String valor, String msg) {
 
         if (valor.isEmpty()) {
@@ -71,7 +69,6 @@ public class Util {
 
     }
 
-    // mensagem de espera para apresentação de dados
     public void clickMe(){
 
         System.out.println("");

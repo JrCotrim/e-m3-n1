@@ -30,10 +30,8 @@ public class MainPart2 {
             String pessoa = scanner.next();
             if (pessoa.contains("f") || pessoa.contains("F") || pessoa.contains("j") || pessoa.contains("J")) {
                 if (pessoa.contains("f") || pessoa.contains("F")) {
-                    //dados = new PessoaFisica();
                     opcaoPessoa = "f";
                 } else {
-                    //dados = new PessoaJuridica();
                     opcaoPessoa = "j";
                 }
                 break;
@@ -66,41 +64,33 @@ public class MainPart2 {
 
             } catch (RuntimeException e) {
                 escolha = -1;
-                scanner.nextLine();  // Limpa o buffer de entrada
+                scanner.nextLine();
             }
 
             switch (escolha) {
                 case 1:
                     opcaoAcao = "I";
-                    //Incluir;
                     return;
                 case 2:
                     opcaoAcao = "A";
-                    //Alterar
                     return;
                 case 3:
                     opcaoAcao = "R";
-                    //excluir (Remove);
                     return;
                 case 4:
                     opcaoAcao = "B";
-                    //buscarPeloId
                     return;
                 case 5:
                     opcaoAcao = "S";
-                    //exibirTodos (Show all)
                     return;
                 case 6:
                     opcaoAcao = "P";
-                    //persistirDados
                     return;
                 case 7:
                     opcaoAcao = "G";
-                    //recuperarDados(Get)
                     return;
                 case 0:
                     opcaoAcao = "E";
-                    //sair(Exit)
                     System.out.println("Encerrar processo ...");
                     scanner.close();
                     System.exit(0);

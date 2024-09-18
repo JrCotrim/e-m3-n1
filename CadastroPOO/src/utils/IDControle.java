@@ -8,7 +8,6 @@ public class IDControle {
 
     static {
 
-        // Inicializar o arquivo com o ID 0, se ele ainda não existir.
         File file = new File(FILE_ID);
         if (!file.exists()) {
             try {

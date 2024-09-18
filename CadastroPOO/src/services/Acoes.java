@@ -58,13 +58,11 @@ public class Acoes {
                 persistirDadosBinarios();
                 break;
             case "G":
-                //recuperarDados(Get)
                 System.out.println("recuperar dados " + tpPessoa);
                 System.out.println("");
                 recuperarDadosBinarios();
                 break;
             case "E":
-                //sair(exit)
                 System.out.println("sair !");
                 scanner.close();
                 System.exit(0);
@@ -144,7 +142,6 @@ public class Acoes {
         String cnpjNovo = "";
         Integer idadeNovo = 0;
 
-        // nome
         if (opcaoAcao.equals("A")) {
             scanner.nextLine();
         }
@@ -153,11 +150,9 @@ public class Acoes {
                            "nome precisa ser preenchido",nome);
 
         if (opcaoPessoa.equals("f")) {
-            // idade
             idadeNovo= utl.inputDadosNum("Digite o idade",
                                   "insira a idade entre 18 e 99 anos"
                                  ,idade);
-            // cpf
             cpfNovo = utl.inputDadosText("Digite o cpf",
                                        "o cpf precisa ser definido",
                                     cpf );
@@ -168,7 +163,6 @@ public class Acoes {
 
 
         } else {
-            // cnpj
             cnpjNovo= utl.inputDadosText("Digite o cnpj",
                                        "o cnpj precisa ser definido",
                                     cnpj);
@@ -208,7 +202,6 @@ public class Acoes {
         }
     }
     private void obterId() {
-        //somente valido para alteraçao/exclusão/busca
         while (true) {
             try {
                 System.out.println("Digite o id");
