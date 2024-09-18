@@ -15,6 +15,7 @@ public abstract class Pessoa implements Serializable {
     }
 
     public Pessoa( String nome) {
+        //this.id += 1;
         this.id= IDControle.getID();
         this.individualId=id;
 
@@ -24,6 +25,13 @@ public abstract class Pessoa implements Serializable {
     public Integer getId() {
         return individualId;
     }
+
+    /*
+     public void setId(Integer id) {
+        this.id = id;
+    }
+
+     */
 
     public String getNome() {
         return nome;

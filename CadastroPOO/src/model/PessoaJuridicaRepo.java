@@ -10,26 +10,31 @@ public class PessoaJuridicaRepo {
 
     private List<PessoaJuridica> listaPessoasJuridicas;
 
+    // Construtor
     public PessoaJuridicaRepo() {
 
         this.listaPessoasJuridicas = new ArrayList<PessoaJuridica>();
     }
 
+    // Método para inserir uma pessoa física
     public void inserir(PessoaJuridica pessoaJuridica) {
          listaPessoasJuridicas.add(pessoaJuridica);
     }
+
+    // Método para alterar uma pessoa física
 
     public boolean alterar(PessoaJuridica pessoaJuridica) {
         for (int i = 0; i < listaPessoasJuridicas.size(); i++) {
             if (listaPessoasJuridicas.get(i).getId() == pessoaJuridica.getId()) {
                 listaPessoasJuridicas.set(i, pessoaJuridica);
-                return true;
+                return true;  // Retorna true indicando sucesso na alteração
             }
         }
 
-        return false;
+        return false;  // Retorna false se a pessoa não foi encontrada na lista
     }
 
+    // Método para excluir uma pessoa física por ID
     public boolean excluir(int id) {
         for (PessoaJuridica p: listaPessoasJuridicas) {
             if(p.getId()==id){
@@ -37,7 +42,7 @@ public class PessoaJuridicaRepo {
                 return true;
             }
         }
-        return false; 
+        return false;  // Retorna false se a pessoa física não foi encontrada na lista
     }
 
     public PessoaJuridica obter(int id) {
@@ -47,6 +52,7 @@ public class PessoaJuridicaRepo {
                 .orElse(null);
     }
 
+    // Método para obter todas as pessoas físicas
     public ArrayList<PessoaJuridica> obterTodos_1() {
         return new ArrayList<>(listaPessoasJuridicas);
     }
